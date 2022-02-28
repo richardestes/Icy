@@ -80,6 +80,17 @@ namespace TarodevController {
 
         }
 
+        void Melt()
+        {
+            transform.localScale -= new Vector3(meltSpeed,meltSpeed,meltSpeed);
+            _jumpHeight = _jumpHeight - meltSpeed * meltJumpModifier;
+            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 2;
+            if (transform.localScale.x < 0.1 || _jumpHeight < 0.1)
+            {
+                isMelted = true;
+            }
+        }
+
         #region Gather Input
 
         private void GatherInput() {
@@ -98,17 +109,6 @@ namespace TarodevController {
             }
         }
         
-        void Melt()
-        {
-            transform.localScale -= new Vector3(meltSpeed,meltSpeed,meltSpeed);
-            _jumpHeight = _jumpHeight - meltSpeed * meltJumpModifier;
-            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 2;
-            if (transform.localScale.x < 0.1 || _jumpHeight < 0.1)
-            {
-                isMelted = true;
-            }
-        }
-        
         void ResetRotation()
         {         
             // Prevent z axis rotation
@@ -118,7 +118,7 @@ namespace TarodevController {
         }
 
         #endregion
-
+        
         #region Collisions
 
         [Header("COLLISION")] [SerializeField] private LayerMask _groundLayer;
