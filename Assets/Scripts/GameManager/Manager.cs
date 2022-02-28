@@ -32,7 +32,7 @@ public class Manager : MonoBehaviour
         {
             HandleDeath();
         }
-        if (!player)
+        if (!player) // Player has already been destroyed
         {
             if (Input.GetButtonDown("Restart") || Input.GetKeyDown(KeyCode.R))
             {

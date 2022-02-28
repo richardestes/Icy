@@ -84,7 +84,7 @@ namespace TarodevController {
         {
             transform.localScale -= new Vector3(meltSpeed,meltSpeed,meltSpeed);
             _jumpHeight = _jumpHeight - meltSpeed * meltJumpModifier;
-            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 1.5f;
+            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 4f;
             if (transform.localScale.x < 0.1 || _jumpHeight < 0.1)
             {
                 isMelted = true;
