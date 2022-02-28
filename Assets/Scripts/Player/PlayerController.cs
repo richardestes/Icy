@@ -29,6 +29,8 @@ namespace TarodevController {
         [Range(0.0001f,0.001f)]
         public float meltSpeed = 0.0001f;
         
+        private float _initialMeltSpeed;
+        
         [Range(5,25)]
         public float meltJumpModifier = 15f;
         
@@ -47,6 +49,7 @@ namespace TarodevController {
         void Awake() {
             _rb = GetComponent<Rigidbody2D>();
             _collider = GetComponent<BoxCollider2D>();
+            _initialMeltSpeed = meltSpeed;
         }
 
 
@@ -72,24 +75,28 @@ namespace TarodevController {
             ResetRotation();
             
             if (!isMelted) Melt();
-            if (isMelted)
-            {
-                Debug.LogWarning("Melted!");
-                gameManager.HandleDeath();
-            }
 
         }
+        
+        #region Melt
 
-        void Melt()
+        public void Melt()
         {
             transform.localScale -= new Vector3(meltSpeed,meltSpeed,meltSpeed);
             _jumpHeight = _jumpHeight - meltSpeed * meltJumpModifier;
-            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 2;
+            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 1.5f;
             if (transform.localScale.x < 0.1 || _jumpHeight < 0.1)
             {
                 isMelted = true;
             }
         }
+        
+        public void ResetMelt()
+        {
+            meltSpeed = _initialMeltSpeed;
+        }
+        
+        #endregion
 
         #region Gather Input
 

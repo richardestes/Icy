@@ -28,7 +28,7 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.isMelted)
+        if (player.isMelted && player)
         {
             HandleDeath();
         }
