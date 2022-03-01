@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-            
-
     [SerializeField]
     public Text gameOverText;
-    
+
     [SerializeField]
-    public PlayerController player;
+    public GameObject player;
+
+    [SerializeField]
+    private PlayerStats playerStats;
     
     [SerializeField]
     public CameraFollow playerCamera;
@@ -19,16 +20,16 @@ public class Manager : MonoBehaviour
     void Start()
     {
         gameOverText.gameObject.SetActive(false);
-        if (!player)
+        if (!playerStats)
         {
-            player = GameObject.FindObjectOfType<PlayerController>();
+            playerStats = player.GetComponent<PlayerStats>();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (player.isMelted && player)
+        if (playerStats && playerStats.isMelted)
         {
             HandleDeath();
         }
@@ -43,7 +44,7 @@ public class Manager : MonoBehaviour
     public void HandleDeath()
     {
         gameOverText.gameObject.SetActive(true);
-        Destroy(player.gameObject);
+        Destroy(playerStats.gameObject);
         playerCamera.transform.position = playerCamera.offset;
     }
 }

@@ -26,19 +26,6 @@ namespace TarodevController {
         public event Action OnJumping, OnDoubleJumping;
         public event Action<bool> OnDashingChanged;
         
-        [Range(0.0001f,0.001f)]
-        public float meltSpeed = 0.0001f;
-        
-        private float _initialMeltSpeed;
-        
-        [Range(5,25)]
-        public float meltJumpModifier = 15f;
-        
-        [SerializeField]
-        public Manager gameManager;
-        
-        public bool isMelted = false;
-
         private Rigidbody2D _rb;
         private BoxCollider2D _collider;
         private Vector3 _lastPosition;
@@ -49,7 +36,6 @@ namespace TarodevController {
         void Awake() {
             _rb = GetComponent<Rigidbody2D>();
             _collider = GetComponent<BoxCollider2D>();
-            _initialMeltSpeed = meltSpeed;
         }
 
 
@@ -73,30 +59,8 @@ namespace TarodevController {
             CalculateDash();
             MoveCharacter();
             ResetRotation();
-            
-            if (!isMelted) Melt();
 
         }
-        
-        #region Melt
-
-        public void Melt()
-        {
-            transform.localScale -= new Vector3(meltSpeed,meltSpeed,meltSpeed);
-            _jumpHeight = _jumpHeight - meltSpeed * meltJumpModifier;
-            _dashPower = _dashPower - meltSpeed * meltJumpModifier * 4f;
-            if (transform.localScale.x < 0.1 || _jumpHeight < 0.1)
-            {
-                isMelted = true;
-            }
-        }
-        
-        public void ResetMelt()
-        {
-            meltSpeed = _initialMeltSpeed;
-        }
-        
-        #endregion
 
         #region Gather Input
 
@@ -266,7 +230,7 @@ namespace TarodevController {
 
         #region Jump
 
-        [Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;
+        [Header("JUMPING")] [SerializeField] public float jumpHeight = 30;
         [SerializeField] private float _jumpApexThreshold = 10f;
         [SerializeField] private int _coyoteTimeThreshold = 7;
         [SerializeField] private int _jumpBuffer = 7;
@@ -298,7 +262,7 @@ namespace TarodevController {
 
         private void CalculateJump() {
             if (_jumpToConsume && CanDoubleJump) {
-                _currentVerticalSpeed = _jumpHeight;
+                _currentVerticalSpeed = jumpHeight;
                 _doubleJumpUsable = false;
                 _endedJumpEarly = false;
                 _jumpToConsume = false;
@@ -308,7 +272,7 @@ namespace TarodevController {
 
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
             if ((_jumpToConsume && CanUseCoyote) || HasBufferedJump) {
-                _currentVerticalSpeed = _jumpHeight;
+                _currentVerticalSpeed = jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;
                 _jumpToConsume = false;
@@ -327,7 +291,7 @@ namespace TarodevController {
 
         #region Dash
 
-        [Header("DASH")] [SerializeField] private float _dashPower = 50;
+        [Header("DASH")] [SerializeField] public float dashPower = 50;
         [SerializeField] private int _dashLength = 3;
         [SerializeField] private float _dashEndHorizontalMultiplier = 0.25f;
         private float _startedDashing;
@@ -344,7 +308,7 @@ namespace TarodevController {
                 _dashToConsume = false;
                 var vel = new Vector2(Input.X, _grounded && Input.Y < 0 ? 0 : Input.Y);
                 if (vel == Vector2.zero) return;
-                _dashVel = vel * _dashPower;
+                _dashVel = vel * dashPower;
                 _dashing = true;
                 OnDashingChanged?.Invoke(true);
                 _canDash = false;
