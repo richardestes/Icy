@@ -17,16 +17,17 @@ public class HeatSource : MonoBehaviour
 
     void Start()
     {
-        playerStats = player.GetComponent<PlayerStats>();
-        meltPower = meltPower * 0.0001f;
+        if (!player) player = GameObject.Find("Player");
+        if (player) playerStats = player.GetComponent<PlayerStats>();
+        meltPower = meltPower * 0.0001f; //conversion for simpler public field
     }
     
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!playerStats) return;
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.CompareTag("Player"))
         {
-            print("Player in radius");
+            print("You are melting!");
             playerStats.meltSpeed += meltPower;
             print("Player melt speed: " + playerStats.meltSpeed);
         }
@@ -35,10 +36,10 @@ public class HeatSource : MonoBehaviour
     void OnTriggerExit2D(Collider2D collision)
     {
         if (!playerStats) return;
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             playerStats.ResetMelt();
-            print("Player has left radius");
+            print("You are no longer melting");
             print("Player melt speed: " + playerStats.meltSpeed);
         }
     }

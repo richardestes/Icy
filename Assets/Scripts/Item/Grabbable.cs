@@ -29,7 +29,7 @@ public class Grabbable : MonoBehaviour
 
     public virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             print("Player in grab radius");
         }
@@ -37,7 +37,7 @@ public class Grabbable : MonoBehaviour
 
     public virtual void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             print("Player out of grab radius");
         }

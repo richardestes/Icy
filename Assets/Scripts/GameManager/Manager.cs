@@ -29,11 +29,11 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerStats && playerStats.isMelted)
+        if (playerStats && playerStats.isMelted) // Player has melted
         {
             HandleDeath();
         }
-        if (!player) // Player has already been destroyed
+        if (!player) // Player gameObject has been destroyed
         {
             if (Input.GetButtonDown("Restart") || Input.GetKeyDown(KeyCode.R))
             {

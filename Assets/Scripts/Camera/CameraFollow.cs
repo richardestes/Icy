@@ -12,7 +12,12 @@ public class CameraFollow : MonoBehaviour
     
     [SerializeField][Range(1,10)]
     public float smoothFactor;
-    
+
+    private void Start()
+    {
+        if (!player) player = GameObject.Find("Player").transform;
+    }
+
     void FixedUpdate()
     {
         if (player)

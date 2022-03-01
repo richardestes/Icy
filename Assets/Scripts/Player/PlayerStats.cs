@@ -5,9 +5,6 @@ using TarodevController;
 
 public class PlayerStats : MonoBehaviour
 {
-    //[Range(0.0001f, 0.001f)]
-    //public float meltSpeed = 0.0001f;
-
     [Range(1f, 10f)]
     public float meltSpeed = 1f;
 
@@ -34,8 +31,6 @@ public class PlayerStats : MonoBehaviour
         playerSprite = gameObject.GetComponent<SpriteRenderer>();
         _initialJumpHeight = Mathf.Round(playerController.jumpHeight);
         _initialDashPower = Mathf.Round(playerController.dashPower);
-        print("Starting jump height: " + _initialJumpHeight);
-        print("Starting dash power: " + _initialDashPower);
     }
 
     void Update()
@@ -48,14 +43,19 @@ public class PlayerStats : MonoBehaviour
         transform.localScale -= new Vector3(meltSpeed, meltSpeed, meltSpeed);
         playerController.jumpHeight = playerController.jumpHeight - meltSpeed * meltJumpModifier;
         playerController.dashPower = playerController.dashPower - meltSpeed * meltJumpModifier * 4f;
+        CheckIfMelted();
+    }
 
-        //print("Local scale: " + transform.localScale.x); DEBUG LINE
-
+    void CheckIfMelted()
+    {
         if (transform.localScale.x < 0.1 || playerController.jumpHeight < 0.1)
         {
             isMelted = true;
         }
+
+        else isMelted = false;
     }
+
     public void Heal()
     {
         ResetMelt();
@@ -78,5 +78,4 @@ public class PlayerStats : MonoBehaviour
         playerController.jumpHeight = _initialJumpHeight;
         playerController.dashPower = _initialDashPower;
     }
-
 }
