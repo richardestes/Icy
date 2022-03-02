@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TarodevController;
 
-public class Grabbable : MonoBehaviour
+public class Consumable : MonoBehaviour
 {
     public CircleCollider2D collider;
 

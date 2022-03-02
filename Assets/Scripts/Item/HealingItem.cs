@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TarodevController;
 
-public class HealingItem : Grabbable
+public class HealingItem : Consumable
 {
     [SerializeField]
     private GameObject player;

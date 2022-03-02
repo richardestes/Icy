@@ -38,7 +38,6 @@ namespace TarodevController {
             _collider = GetComponent<BoxCollider2D>();
         }
 
-
         private void Update() {
             // Calculate velocity
             _velocity = (transform.position - _lastPosition) / Time.deltaTime;
