@@ -5,17 +5,28 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     public GameObject connectedDoor;
-    public bool teleported = false;
     public GameObject key;
-
     public bool requiresKey;
 
-    private GameObject player;
+    [SerializeField]
+    private Sprite lockedSprite;
 
-    // Start is called before the first frame update
+    [SerializeField]
+    private Sprite unlockedSprite;
+
+    private GameObject player;
+    private SpriteRenderer spriteRenderer;
+    private bool teleported = false;
+    private bool unlocked = false;
+
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (requiresKey || !unlocked)
+        {
+            spriteRenderer.sprite = lockedSprite;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -24,12 +35,14 @@ public class Door : MonoBehaviour
         {
             if (Input.GetAxisRaw("Vertical") == 1 && !teleported) // up direction
             {
-                if (requiresKey && key.GetComponent<Key>().isHeld)
+                if (requiresKey && !unlocked && key.GetComponent<Key>().isHeld) // Open Door
                 {
-                    requiresKey = false;
-                    TeleportPlayer();
+                    unlocked = true;
+                    spriteRenderer.sprite = unlockedSprite;
                     Destroy(key);
                 }
+
+                if (unlocked) TeleportPlayer();
             }
         }
     }

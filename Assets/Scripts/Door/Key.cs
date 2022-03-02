@@ -16,9 +16,13 @@ public class Key : MonoBehaviour
         spring.connectedBody = backpack.GetComponent<Rigidbody2D>();
         isHeld = false;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) spring.enabled = true;
-        isHeld = true;
+        if (collision.gameObject.CompareTag("Player")) // Add to backpack
+        {
+            spring.enabled = true;
+            isHeld = true;
+        }
     }
 }
