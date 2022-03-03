@@ -37,16 +37,19 @@ public class Door : MonoBehaviour
             {
                 if (unlocked) TeleportPlayer(); // less expensive so we check first
 
+                // This feels very redundant to have two bools that accomplish
+                // the same thing. In the future, this could be cleaned up by
+                // removing requiresKey and only using unlocked.
+                // For doors that do not require a key, just set their unlocked
+                // bool value to true.
                 if (requiresKey && !unlocked)
                 {
                     if (key != null && key.GetComponent<Key>().isHeld) // Open Door
                     {
-                        Door connect = connectedDoor.GetComponent<Door>();
-                        connect.unlocked = true;
-                        unlocked = true;
-                        spriteRenderer.sprite = unlockedSprite;
-                        connect.spriteRenderer.sprite = unlockedSprite;
+                        OpenDoor();
+                        ChangeSpritesToUnlocked();
                         Destroy(key);
+                        TeleportPlayer();
                     }
                 }
             }
@@ -67,5 +70,19 @@ public class Door : MonoBehaviour
         teleportPosition.z = player.transform.position.z;
         player.transform.position = teleportPosition;
         connectedDoor.GetComponent<Door>().teleported = true;
+    }
+
+    void OpenDoor()
+    {
+        Door connect = connectedDoor.GetComponent<Door>();
+        connect.unlocked = true;
+        unlocked = true;
+    }
+
+    void ChangeSpritesToUnlocked()
+    {
+        Door connect = connectedDoor.GetComponent<Door>();
+        spriteRenderer.sprite = unlockedSprite;
+        connect.spriteRenderer.sprite = unlockedSprite;
     }
 }

@@ -48,7 +48,7 @@ public class PlayerStats : MonoBehaviour
 
     void CheckIfMelted()
     {
-        if (transform.localScale.x < 0.1 || playerController.jumpHeight < 0.1)
+        if (transform.localScale.x < 0.15 || playerController.jumpHeight < 0.15)
         {
             isMelted = true;
         }
