@@ -35,21 +35,27 @@ public class Door : MonoBehaviour
         {
             if (Input.GetAxisRaw("Vertical") == 1 && !teleported) // up direction
             {
-                if (requiresKey && !unlocked && key.GetComponent<Key>().isHeld) // Open Door
-                {
-                    unlocked = true;
-                    spriteRenderer.sprite = unlockedSprite;
-                    Destroy(key);
-                }
+                if (unlocked) TeleportPlayer(); // less expensive so we check first
 
-                if (unlocked) TeleportPlayer();
+                if (requiresKey && !unlocked)
+                {
+                    if (key != null && key.GetComponent<Key>().isHeld) // Open Door
+                    {
+                        Door connect = connectedDoor.GetComponent<Door>();
+                        connect.unlocked = true;
+                        unlocked = true;
+                        spriteRenderer.sprite = unlockedSprite;
+                        connect.spriteRenderer.sprite = unlockedSprite;
+                        Destroy(key);
+                    }
+                }
             }
         }
     }
 
     private void Update()
     {
-        if(teleported && Input.GetAxisRaw("Vertical") < 1) // Did player let go of up direction
+        if (teleported && Input.GetAxisRaw("Vertical") < 1) // Did player let go of up direction
         {
             teleported = false;
         }
@@ -57,7 +63,9 @@ public class Door : MonoBehaviour
 
     void TeleportPlayer()
     {
-        player.transform.position = connectedDoor.transform.position;
+        Vector3 teleportPosition = connectedDoor.transform.position;
+        teleportPosition.z = player.transform.position.z;
+        player.transform.position = teleportPosition;
         connectedDoor.GetComponent<Door>().teleported = true;
     }
 }
